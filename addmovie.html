@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Movie Data to Firebase</title>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script>
+        // Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBM2d6LqairWJ8Sr99cqzYtZAkjIVqxQGA",
+            authDomain: "moviebuff-3007b.firebaseapp.com",
+            projectId: "moviebuff-3007b",
+            storageBucket: "moviebuff-3007b.appspot.com",
+            messagingSenderId: "33959895618",
+            appId: "1:33959895618:web:60be247696471fb57a43db",
+            measurementId: "G-B1GQ31753T"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+        // Function to add movies
+        function addMovies() {
+            // Action movies
+            const actionMovies = [
+                {
+                    title: "Vikram",
+                    image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQePndb2bpcl_w5Gmz1o2HYpcpuAALl_jJ-XvYz-IvbdDUr5K1i",
+                    description: "An action-packed thriller.",
+                    link: "https://www.imdb.com/title/tt9179430/"
+                },
+                {
+                    title: "Kaithi",
+                    image: "https://asianmoviepulse.com/wp-content/uploads/2023/03/Karthi_Kaithi_1660115149516_1660115154525_1660115154525-990x557.jpg",
+                    description: "A gripping action drama.",
+                    link: "https://www.imdb.com/title/tt9900782/"
+                },
+                {
+                    title: "Master",
+                    image: "https://upload.wikimedia.org/wikipedia/en/5/53/Master_2021_poster.jpg",
+                    description: "A college professor battles a gangster.",
+                    link: "https://www.imdb.com/title/tt10579952/"
+                },
+                {
+                    title: "Mersal",
+                    image: "https://upload.wikimedia.org/wikipedia/en/3/3c/Mersal_film_poster.jpg",
+                    description: "A magician and a doctor expose corruption.",
+                    link: "https://www.imdb.com/title/tt6485666/"
+                },
+                {
+                    title: "Valimai",
+                    image: "https://static.moviecrow.com/gallery/20210712/187454-valimai%20poster.jpg",
+                    description: "An action thriller featuring Ajith Kumar regarding bike action.",
+                    link: "https://www.imdb.com/title/tt10806040/"
+                },
+                {
+                    title: "KGF: Chapter 2",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs5Vo2OulSEXWfroqvIjx0VvYqYjVGLaUHUsfHV7laaYxIQ7qFvkQGD_eao-dt0eIM-JJHag",
+                    description: "Sequel to the blockbuster KGF, starring Yash.",
+                    link: "https://www.imdb.com/title/tt10698680/"
+                },
+                {
+                    title: "Ayan",
+                    image: "https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/ayan-et00002804-1698239436.jpg",
+                    description: "An action thriller regarding drug smuggling.",
+                    link: "https://www.imdb.com/title/tt1355546/"
+                },
+                {
+                    title: "Captain Miller",
+                    image: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSeYaFj8tnsMrxv5yjk2LtOS-1LbRmPVSL2c3FPO4NPgYykYtwvQEd8sr-dvJww17O8hrRG",
+                    description: "An action film regarding independence.",
+                    link: "https://www.imdb.com/title/tt22170036/"
+                }
+            ];
+
+            // Drama movies
+            const dramaMovies = [
+                {
+                    title: "96",
+                    image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ5Q62cqxekAvztiYKRbRJRdRI94lpndixOnR_lzjUjkXtm9EcdMI0k5dhxkm0Xp3by1IKG-Q",
+                    description: "A nostalgic love story.",
+                    link: "https://www.imdb.com/title/tt7019842/"
+                },
+                {
+                    title: "Super Deluxe",
+                    image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSVKUZG3wGdEH8HOWvizhT0lulKxsyTeJi1KMhpnt1fazxJI0A4_04VCMj1P1oSIUn9QwFx",
+                    description: "An ensemble drama with interconnected stories.",
+                    link: "https://www.imdb.com/title/tt7019942/"
+                },
+                {
+                    title: "Asuran",
+                    image: "https://m.media-amazon.com/images/M/MV5BMDgwZWUyYzctOGU1NC00ZTFkLTgxM2EtNGU0ZWUwY2Y3YjhkXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg",
+                    description: "A farmer avenges his son's death.",
+                    link: "https://www.imdb.com/title/tt9477520/"
+                },
+                {
+                    title: "Visaranai",
+                    image: "https://upload.wikimedia.org/wikipedia/en/0/01/Visaranai_film_release_poster.jpg",
+                    description: "A brutal police interrogation tale.",
+                    link: "https://www.imdb.com/title/tt4991384/"
+                }
+            ];
+
+            // Comedy movies
+            const comedyMovies = [
+                {
+                    title: "Soodhu Kavvum",
+                    image: "https://m.media-amazon.com/images/M/MV5BZjgyOTg3ZDQtYjNiOC00OTVlLTg3MWYtM2ViMjM5YTI3ZmQ5XkEyXkFqcGdeQXVyMTEzNzg0Mjkx._V1_FMjpg_UX1000_.jpg",
+                    description: "A dark comedy about kidnapping.",
+                    link: "https://www.imdb.com/title/tt2877108/"
+                },
+                {
+                    title: "Beast",
+                    image: "https://static-koimoi.akamaized.net/wp-content/new-galleries/2022/03/beast-1.jpg",
+                    description: "Dark comedy movie about mall hijacking.",
+                    link: "https://www.imdb.com/title/tt11301946/"
+                },
+                {
+                    title: "Doctor",
+                    image: "https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/doctor-et00305742-02-02-2021-03-30-24.jpg",
+                    description: "Dark comedy action movie.",
+                    link: "https://www.imdb.com/title/tt11374902/"
+                },
+                {
+                    title: "Nanban",
+                    image: "https://m.media-amazon.com/images/M/MV5BNDhhM2FmNDAtN2YwMS00ZWIxLTlhZjItOGU1OGMzYjRmZmIxXkEyXkFqcGdeQXVyOTk3NTc2MzE@._V1_.jpg",
+                    description: "A comedy about friendship and college life.",
+                    link: "https://www.imdb.com/title/tt2180477/"
+                }
+            ];
+
+            // Add movies to Firestore
+            actionMovies.forEach(movie => {
+                db.collection("action").add(movie)
+                    .then(() => {
+                        console.log("Action movie added successfully");
+                    })
+                    .catch(error => {
+                        console.error("Error adding action movie: ", error);
+                    });
+            });
+
+            dramaMovies.forEach(movie => {
+                db.collection("drama").add(movie)
+                    .then(() => {
+                        console.log("Drama movie added successfully");
+                    })
+                    .catch(error => {
+                        console.error("Error adding drama movie: ", error);
+                    });
+            });
+
+            comedyMovies.forEach(movie => {
+                db.collection("comedy").add(movie)
+                    .then(() => {
+                        console.log("Comedy movie added successfully");
+                    })
+                    .catch(error => {
+                        console.error("Error adding comedy movie: ", error);
+                    });
+            });
+        }
+    </script>
+</head>
+<body>
+    <button onclick="addMovies()">Add Movies to Firebase</button>
+</body>
+</html>
